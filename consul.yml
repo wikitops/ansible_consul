@@ -4,6 +4,6 @@
   remote_user: vagrant
   become: yes
   vars:
-    consul_install_type: docker # baremetal / docker
+    consul_install_type: baremetal # baremetal / docker
   roles:
     - consul

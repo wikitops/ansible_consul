@@ -1,4 +1,5 @@
 {
+  "advertise_addr": "{{ hostvars[inventory_hostname].ip }}",
   "bootstrap_expect": {{ consul_bootstrap_expect }},
   "client_addr": "{{ consul_client_addr }}",
   "datacenter": "{{ consul_datacenter }}",
@@ -12,6 +13,9 @@
   "enable_syslog": {{ consul_enable_syslog | to_json }},
   "leave_on_terminate": true,
   "log_level": "{{ consul_log_level }}",
+  "log_file": "{{ consul_log_file }}",
+  "log_rotate_duration": "{{ consul_log_rotate_duration }}",
+  "log_rotate_max_files": {{ consul_log_rotate_max_files }},
   "rejoin_after_leave": true,
   "server": true,
   "start_join": [{% for host in groups['consul'] %}"{{ hostvars[host].ip }}"{% if not loop.last %}, {% endif %}{% endfor %}],

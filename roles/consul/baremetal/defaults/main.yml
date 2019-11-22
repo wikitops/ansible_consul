@@ -20,7 +20,7 @@ consul_log_dir: /var/log/consul
 consul_log_file : "{{ consul_log_dir }}/consul.log"
 consul_log_level: INFO
 consul_enable_syslog: false
-consul_log_rotation_duration: 24h
+consul_log_rotate_duration: 24h
 consul_log_rotate_max_files: 7
 
 # User

@@ -11,7 +11,7 @@ ConditionFileNotEmpty={{ consul_config_dir }}/config.json
 Type=notify
 User={{ consul_user }}
 Group={{ consul_group }}
-ExecStart=/usr/local/bin/consul agent -bind={{ hostvars[inventory_hostname].ip }} -config-dir={{ consul_config_dir }} -log-file={{ consul_log_file }} -log-rotate-duration={{ consul_log_rotation_duration }} -log-rotate-max-files={{ consul_log_rotate_max_files }}
+ExecStart=/usr/local/bin/consul agent -config-dir={{ consul_config_dir }}
 ExecReload=/usr/local/bin/consul reload
 KillMode=process
 Restart=on-failure

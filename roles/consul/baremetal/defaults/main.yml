@@ -1,0 +1,45 @@
+---
+
+###
+# CONSUL
+###
+
+# Version
+consul_version: 1.6.2
+
+# Binaries
+consul_binary_url: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_linux_amd64.zip
+
+# Directories
+consul_home_dir: /opt/consul
+consul_config_dir: /etc/consul.d
+consul_data_dir: "{{ consul_home_dir }}"
+consul_log_dir: /var/log/consul
+
+# Log
+consul_log_file : "{{ consul_log_dir }}/consul.log"
+consul_log_level: INFO
+consul_enable_syslog: false
+consul_log_rotation_duration: 24h
+consul_log_rotate_max_files: 7
+
+# User
+consul_group: consul
+consul_user: consul
+
+# Port
+consul_http_port: 8500
+consul_https_port: -1
+consul_server_port: 8300
+
+# datacenter
+consul_datacenter: dc1
+
+# Client Adress
+consul_client_addr: 0.0.0.0
+
+# Bootstrap
+consul_bootstrap_expect: "{{ groups['consul'] | length }}"
+
+# Domain
+consul_domain: consul

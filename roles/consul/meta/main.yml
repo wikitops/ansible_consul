@@ -1,0 +1,9 @@
+---
+
+dependencies:
+
+  - role: consul/baremetal
+    when: consul_install_type == "baremetal"
+
+  - role: consul/docker
+    when: consul_install_type == "docker"

@@ -1,0 +1,39 @@
+---
+
+- name: CONSUL DOCKER | Create directories
+  file:
+    path: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  loop:
+    - "{{ consul_config_dir }}"
+    - "{{ consul_data_dir }}"
+
+- name: CONSUL DOCKER | Deploy configuration file
+  template:
+    src: etc/consul.d/config.json.j2
+    dest: "{{ consul_config_dir }}/config.json"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: CONSUL DOCKER | Create the network
+  docker_network:
+    name: "{{ consul_docker_network.name }}"
+    state: "{{ consul_docker_network.state }}"
+
+- name: CONSUL DOCKER | Deploy the container
+  docker_container:
+    command: "{{ consul_docker.command }}"
+    env:
+      CONSUL_BIND_INTERFACE: "eth0"
+      CONSUL_CLIENT_INTERFACE: "eth0"
+    name: "{{ consul_docker.name }}"
+    image: "{{ consul_docker.image }}"
+    state: "{{ consul_docker.state }}"
+    ports: "{{ consul_docker.ports }}"
+    networks:
+      - name: "{{ consul_docker.network }}"
+    volumes: "{{ consul_docker.volumes }}"

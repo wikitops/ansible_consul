@@ -1,0 +1,40 @@
+---
+
+- name: CONSUL BAREMETAL CONFIGURE | Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    mode: 0755
+  loop:
+    - "{{ consul_home_dir }}"
+    - "{{ consul_config_dir }}"
+    - "{{ consul_data_dir }}"
+    - "{{ consul_log_dir }}"
+
+- name: CONSUL BAREMETAL CONFIGURE | Get key from keygen
+  run_once: yes
+  shell: /usr/local/bin/consul keygen
+  changed_when: false
+  args:
+    creates: /etc/consul.d/config.json
+  register: consul_encrypt_key
+
+- name: CONSUL BAREMETAL CONFIGURE | Configuration
+  template:
+    src: etc/consul.d/config.json.j2
+    dest: /etc/consul.d/config.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart consul
+
+- name: CONSUL BAREMETAL CONFIGURE | Deploy systemd file
+  template:
+    src: lib/systemd/system/consul.service.j2
+    dest: /lib/systemd/system/consul.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart consul

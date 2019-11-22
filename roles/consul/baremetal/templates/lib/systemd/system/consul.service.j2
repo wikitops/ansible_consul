@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io/
+Requires=network-online.target
+After=network-online.target
+ConditionFileNotEmpty={{ consul_config_dir }}/config.json
+
+[Service]
+Type=notify
+User={{ consul_user }}
+Group={{ consul_group }}
+ExecStart=/usr/local/bin/consul agent -bind={{ hostvars[inventory_hostname].ip }} -config-dir={{ consul_config_dir }} -log-file={{ consul_log_file }} -log-rotate-duration={{ consul_log_rotation_duration }} -log-rotate-max-files={{ consul_log_rotate_max_files }}
+ExecReload=/usr/local/bin/consul reload
+KillMode=process
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

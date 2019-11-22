@@ -1,0 +1,17 @@
+---
+
+- name: CONSUL BAREMETAL INSTALL | Install prerequisites
+  package:
+    name:
+      - unzip
+    state: present
+
+- name: CONSUL BAREMETAL INSTALL | Unarchive binary
+  unarchive:
+    src: "{{ consul_binary_url }}"
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+  notify: Restart consul

@@ -1,0 +1,24 @@
+{
+  "bootstrap_expect": {{ consul_bootstrap_expect }},
+  "client_addr": "{{ consul_client_addr }}",
+  "datacenter": "{{ consul_datacenter }}",
+  "data_dir": "{{ consul_data_dir }}",
+  "domain": "{{ consul_domain }}",
+  "enable_script_checks": true,
+  "dns_config": {
+    "enable_truncate": true,
+    "only_passing": true
+  },
+  "enable_syslog": {{ consul_enable_syslog | to_json }},
+  "leave_on_terminate": true,
+  "log_level": "{{ consul_log_level }}",
+  "rejoin_after_leave": true,
+  "server": true,
+  "start_join": [{% for host in groups['consul'] %}"{{ hostvars[host].ip }}"{% if not loop.last %}, {% endif %}{% endfor %}],
+  "ui": true,
+  "ports": {
+    "http": {{ consul_http_port }},
+    "https": {{ consul_https_port }},
+    "server": {{ consul_server_port }}
+  }
+}

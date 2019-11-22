@@ -1,0 +1,53 @@
+---
+
+###
+# CONSUL
+###
+
+# Version
+consul_version: latest
+
+# Directories
+consul_home_dir: /opt/consul
+consul_config_dir: /etc/consul.d
+consul_data_dir: "{{ consul_home_dir }}"
+
+# Port
+consul_http_port: 8500
+consul_https_port: -1
+consul_server_port: 8300
+
+# datacenter
+consul_datacenter: dc1
+
+# Client Adress
+consul_client_addr: 0.0.0.0
+
+# Bootstrap
+consul_bootstrap_expect: "{{ groups['consul'] | length }}"
+
+# Domain
+consul_domain: consul
+
+###
+# DOCKER
+###
+
+# Network
+consul_docker_network:
+  name: consul
+  state: present
+
+# Stack
+consul_docker:
+  command: consul agent -config-file={{ consul_config_dir }}/config.json
+  name: consul
+  image: consul:{{ consul_version }}
+  state: started
+  network: consul
+  ports:
+    - 8500:8500/tcp
+    - 8600:8600/udp
+  volumes:
+    - "{{ consul_config_dir }}:/etc/consul.d"
+    - "{{ consul_data_dir }}:/opt/consul"

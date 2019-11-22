@@ -1,0 +1,10 @@
+---
+
+- name: CONSUL BAREMETAL | Include user management
+  include_tasks: users.yml
+
+- name: CONSUL BAREMETAL | Include installation management
+  include_tasks: install.yml
+
+- name: CONSUL BAREMETAL | Include configuration management
+  include_tasks: configure.yml
